@@ -1,14 +1,18 @@
+'use strict';
 import React from 'react';
-import { View, Text, TouchableOpacity, ActivityIndicator } from 'react-native';
-import commonUtil from '../common/commonUtil';
+import { View, Text, ActivityIndicator, TouchableOpacity } from 'react-native';
 import { PropTypes } from 'prop-types';
-import style from '../common/themes/default/style';
+import commonUtil from '../common/commonUtil';
+
+const SIZES = ['small', 'large'];
+const LOADINGSTYLES = ['inside', 'over'];
 
 export default class LoadingView extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
 			loading: this.props.loading,
+			loadingText: this.props.loadingText,
 			isEmpty: this.props.isEmpty,
 			loadingShowContent: this.props.loadingShowContent,
 		};
@@ -16,45 +20,43 @@ export default class LoadingView extends React.Component {
 
 	static propTypes = {
 		loading: PropTypes.bool,
-		isEmpty: PropTypes.bool,
-		loadingShowContent: PropTypes.bool,
+		loadingText: PropTypes.string,
 		loadingColor: PropTypes.string,
-		loadingSize: PropTypes.string,
-		relative: PropTypes.bool,
+		loadingSize: PropTypes.oneOf(SIZES),
+		overlayColor: PropTypes.string,
 		cancelable: PropTypes.bool,
+		loadingPaddingTop: PropTypes.number,
+		loadingPaddingBottom: PropTypes.number,
+		isEmpty: PropTypes.bool,
+		emptyText: PropTypes.string,
+		loadingShowContent: PropTypes.bool,
+		relative: PropTypes.bool,
+		loadingStyle: PropTypes.oneOf(LOADINGSTYLES),
 	};
 
 	static defaultProps = {
-		loading: true,
-		isEmpty: false,
-		loadingShowContent: false,
-		emptyText: '',
+		loading: false,
+		loadingText: '',
 		loadingColor: '',
-		loadingSize: 'small',
-		loadingText: false,
+		loadingSize: 'small', // 'normal',
+		overlayColor: '',
 		cancelable: false,
+		loadingPaddingTop: 0,
+		loadingPaddingBottom: 0,
+		isEmpty: false,
+		emptyText: '',
+		loadingShowContent: false,
+		relative: false,
+		loadingStyle: 'over',
 	};
 
-	componentWillReceiveProps(nextProps) {
-		const { loading, isEmpty } = nextProps;
-		this.setState({ loading, isEmpty });
+	close() {
+		this.setState({ loading: false });
 	}
 
-	_renderContent(styles) {
-		let { loading, isEmpty, loadingShowContent } = this.state;
-		if (loading === false) {
-			if (isEmpty === true) {
-				return (
-					<View style={styles.emptyTextContainer}>
-						<Text style={styles.emptyText}>{this.props.emptyText == '' ? commonUtil.translate('暂无数据') : this.props.emptyText}</Text>
-					</View>
-				);
-			} else {
-				return this.props.children;
-			}
-		} else if (loadingShowContent) {
-			return this.props.children;
-		}
+	componentWillReceiveProps(nextProps) {
+		const { loading, isEmpty, textContent } = nextProps;
+		this.setState({ loading, isEmpty, textContent });
 	}
 
 	_renderLoading(styles) {
@@ -65,7 +67,7 @@ export default class LoadingView extends React.Component {
 						onPress={() => {
 							this.props.cancelable ? this.setState({ loading: false }) : null;
 						}}
-						style={[this.props.relative ? style.background_relative : styles.background]}>
+						style={[this.props.relative ? styles.background_relative : styles.background]}>
 						<View style={[styles.activityIndicatorContainer, this.props.overlayColor != '' && { backgroundColor: this.props.overlayColor }]}>
 							<ActivityIndicator color={this.props.loadingColor == '' ? styles.loadingColor : this.props.loadingColor} size={this.props.loadingSize} />
 							<Text style={styles.loadingText}>{commonUtil.translate('加载中')}</Text>
@@ -90,11 +92,30 @@ export default class LoadingView extends React.Component {
 		}
 	}
 
+	_renderContent(styles) {
+		let { loading, isEmpty, loadingShowContent } = this.state;
+		if (loading == false) {
+			if (isEmpty == true) {
+				return (
+					<View style={styles.emptyTextContainer}>
+						<Text style={styles.emptyText}>{this.props.emptyText == '' ? commonUtil.translate('暂无数据') : this.props.emptyText}</Text>
+					</View>
+				);
+			} else {
+				return this.props.children;
+			}
+		} else if (loadingShowContent) {
+			return this.props.children;
+		}
+	}
+
 	render() {
 		let theme = commonUtil.getTheme();
 		let styles = theme.style.component.LoadingView;
 		return (
-			<View style={[styles.container, this.props.style && this.props.style]}>
+			<View
+				//  {...this.props}
+				style={[styles.container, this.props.style && this.props.style]}>
 				{this._renderContent(styles)}
 				{this._renderLoading(styles)}
 			</View>

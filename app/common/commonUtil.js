@@ -1,5 +1,6 @@
 import defaultTheme from './themes/default/index';
 import I18n from 'react-native-i18n';
+import { config } from './importUtil';
 
 I18n.defaultLocale = 'zh-CN';
 I18n.fallbacks = true;
@@ -32,5 +33,17 @@ module.exports = {
 	},
 	translate(key) {
 		return I18n.t(key);
+	},
+	getTheme() {
+		return _theme;
+	},
+	log(a, b) {
+		if (config.DEBUG) {
+			if (b) {
+				console.log(a, b);
+			} else {
+				console.log(a);
+			}
+		}
 	},
 };
