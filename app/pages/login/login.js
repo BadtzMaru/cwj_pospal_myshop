@@ -13,6 +13,7 @@ import {
 	httpUtil,
 	config,
 	storageUtil,
+	AnalyticsUtil,
 } from '../../common/importUtil';
 
 export default class login extends Component {
@@ -132,16 +133,33 @@ export default class login extends Component {
 				storageUtil.setSigninOptions(params);
 				storageUtil.setStoreInfo(response.result);
 				await this.getAnnouncementList();
+				storageUtil.setPermission(response.result, cashierlogin);
+				// 友盟-移动统计分析
+				// AnalyticsUtil.profileSignInWithPUID(params.account);
 			})
 			.catch((error) => {
 				console.log('catch', error);
 			});
 	}
 	getAnnouncementList() {
-		return new Promise((resolve) => {
+		return new Promise((resolve, reject) => {
 			storageUtil.getDateRangeAndUserIdsParam().then((params) => {
 				console.log('params:', params);
 				//  获取店铺数据
+				httpUtil
+					.post(config.API.API_LoadAnnouncements, params)
+					.then((res) => {
+						console.log('LoadAnnouncements获取的数据:', res);
+						let list = res.result.announcements;
+						for (let i in list) {
+							list[i] = Object.assign({}, list[i], { show: true });
+						}
+						storageUtil.setAnnouncements(list);
+						resolve(res);
+					})
+					.catch((error) => {
+						resolve(error);
+					});
 			});
 		});
 	}

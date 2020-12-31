@@ -176,4 +176,22 @@ module.exports = {
 			return this._dateRange;
 		}
 	},
+	// 设置公告
+	async setAnnouncements(data) {
+		this._announcements = data;
+		await AsyncStorage.setItem('ANNOUNCEMENTS', JSON.stringify(data));
+	},
+	// 设置权限
+	async setPermission(storeInfo, type) {
+		console.log('设置权限', storeInfo, type);
+		this._permission = false;
+		if (storeInfo) {
+			// 不是员工 或者 cashierAuths包含1376879633495704861
+			if (!type || storeInfo.cashierAuths.indexOf('1376879633495704861') != -1) {
+				this._permission = true;
+			}
+		}
+		console.log('PERMISSION', this._permission);
+		await AsyncStorage.setItem('PERMISSION', JSON.stringify(this._permission));
+	},
 };

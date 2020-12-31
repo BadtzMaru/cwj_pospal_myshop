@@ -29,8 +29,8 @@ const _environments = {
 };
 
 const _api = {
-	// 登陆
-	API_SIGNIN: '/myshopapi/Account/SignIn',
+	API_SIGNIN: '/myshopapi/Account/SignIn', // 登陆
+	API_LoadAnnouncements: 'myshopapi/Setting/LoadAnnouncements', //公告
 };
 
 module.exports = {
