@@ -194,4 +194,32 @@ module.exports = {
 		console.log('PERMISSION', this._permission);
 		await AsyncStorage.setItem('PERMISSION', JSON.stringify(this._permission));
 	},
+	// 判断tabbar页面权限 是否加锁
+	async isLock(type, functionId) {
+		let storeInfo = await this.getStoreInfo();
+		console.log('storeInfo:', storeInfo);
+		// 非工号忽略
+		if (storeInfo.cashierId == null) return false;
+		let list = await this.getStoreInfo();
+		let ids = [];
+		function change(data) {
+			data.map((item) => {
+				ids.push(item.id);
+				if (item.subWebsiteMenus && item.subWebsiteMenus.length != 0) {
+					change(item.subWebsiteMenus);
+				}
+			});
+		}
+		if (type == 1) {
+			// 收银端
+			ids = list.cashierAuths;
+		} else if (type == 2) {
+			// 云端
+			change(list.websiteMenus);
+		}
+		if (ids.indexOf(functionId) != -1) {
+			return false;
+		}
+		return true;
+	},
 };

@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, TextInput, TouchableOpacity, Image } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, Image, Alert } from 'react-native';
 import Component from '../component/baseComponent';
 import LoadingView from '../component/LoadingView';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
@@ -9,6 +9,7 @@ import httpUtil from './httpUtil';
 import config from './config';
 import storageUtil from './storageUtil';
 import AnalyticsUtil from '../component/umeng/AnalyticsUtil';
+import commonUtil from './commonUtil';
 
 export {
 	React,
@@ -26,4 +27,6 @@ export {
 	config,
 	storageUtil,
 	AnalyticsUtil,
+	commonUtil,
+	Alert,
 };

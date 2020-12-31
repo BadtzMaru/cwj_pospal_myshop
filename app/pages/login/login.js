@@ -13,7 +13,6 @@ import {
 	httpUtil,
 	config,
 	storageUtil,
-	AnalyticsUtil,
 } from '../../common/importUtil';
 
 export default class login extends Component {
@@ -134,8 +133,16 @@ export default class login extends Component {
 				storageUtil.setStoreInfo(response.result);
 				await this.getAnnouncementList();
 				storageUtil.setPermission(response.result, cashierlogin);
-				// 友盟-移动统计分析
-				// AnalyticsUtil.profileSignInWithPUID(params.account);
+				// 友盟-移动统计分析 (未实现)
+				this.setState(
+					{
+						loading: false,
+						password: '',
+					},
+					() => {
+						this.props.navigation.replace('main');
+					}
+				);
 			})
 			.catch((error) => {
 				console.log('catch', error);
