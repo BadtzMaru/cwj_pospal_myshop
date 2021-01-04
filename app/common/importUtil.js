@@ -10,6 +10,7 @@ import config from './config';
 import storageUtil from './storageUtil';
 import AnalyticsUtil from '../component/umeng/AnalyticsUtil';
 import commonUtil from './commonUtil';
+import Container from '../component/Container';
 
 export {
 	React,
@@ -29,4 +30,5 @@ export {
 	AnalyticsUtil,
 	commonUtil,
 	Alert,
+	Container,
 };

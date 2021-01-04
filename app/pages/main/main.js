@@ -14,9 +14,17 @@ class Main extends Component {
 			isMember: true,
 			isMarking: true,
 		};
+		// 云端 销售
 		storageUtil.isLock(2, 78).then((lock) => {
-			console.log('是否销售限制:', lock);
 			this.setState({ isSale: lock });
+		});
+		// 云端 会员
+		storageUtil.isLock(2, 176).then((lock) => {
+			this.setState({ isMember: lock });
+		});
+		// 云端 营销
+		storageUtil.isLock(2, 252).then((lock) => {
+			this.setState({ isMarking: lock });
 		});
 	}
 

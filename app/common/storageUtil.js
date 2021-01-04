@@ -46,6 +46,9 @@ module.exports = {
 			}
 		}
 	},
+	setNavigation(navigation) {
+		this._navigation = navigation;
+	},
 	async getNavigation() {
 		return this._navigation;
 	},
@@ -113,8 +116,6 @@ module.exports = {
 				}
 			}
 		}
-		console.log('storeInfo', storeInfo);
-		console.log('currentStore', currentStore);
 		param.userIds = userIds;
 		let dateRange = await this.getDateRange();
 		param.beginDateTime = moment(dateRange.begin).format('YYYY-MM-DD HH:mm:ss');
@@ -147,7 +148,7 @@ module.exports = {
 			let value = AsyncStorage.getItem('CURRENT_STORE');
 			if (value) {
 				this._currentStore = JSON.parse(value);
-				return _currentStore;
+				return this._currentStore;
 			} else {
 				return null;
 			}
@@ -183,7 +184,6 @@ module.exports = {
 	},
 	// 设置权限
 	async setPermission(storeInfo, type) {
-		console.log('设置权限', storeInfo, type);
 		this._permission = false;
 		if (storeInfo) {
 			// 不是员工 或者 cashierAuths包含1376879633495704861
@@ -191,13 +191,11 @@ module.exports = {
 				this._permission = true;
 			}
 		}
-		console.log('PERMISSION', this._permission);
 		await AsyncStorage.setItem('PERMISSION', JSON.stringify(this._permission));
 	},
 	// 判断tabbar页面权限 是否加锁
 	async isLock(type, functionId) {
 		let storeInfo = await this.getStoreInfo();
-		console.log('storeInfo:', storeInfo);
 		// 非工号忽略
 		if (storeInfo.cashierId == null) return false;
 		let list = await this.getStoreInfo();
@@ -221,5 +219,19 @@ module.exports = {
 			return false;
 		}
 		return true;
+	},
+	// 获取公告信息
+	async getAnnouncements() {
+		if (this._announcements) {
+			return this._announcements;
+		} else {
+			let announcements = await AsyncStorage.getItem('ANNOUNCEMENTS');
+			if (announcements) {
+				this._announcements = JSON.parse(announcements);
+				return this._announcements;
+			} else {
+				return null;
+			}
+		}
 	},
 };

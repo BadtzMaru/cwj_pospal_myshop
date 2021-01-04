@@ -1,6 +1,7 @@
 import defaultTheme from './themes/default/index';
 import I18n from 'react-native-i18n';
 import { config } from './importUtil';
+import moment from 'moment';
 
 I18n.defaultLocale = 'zh-CN';
 I18n.fallbacks = true;
@@ -37,13 +38,34 @@ module.exports = {
 	getTheme() {
 		return _theme;
 	},
-	log(a, b) {
-		if (config.DEBUG) {
-			if (b) {
-				console.log(a, b);
-			} else {
-				console.log(a);
+	formatDateRangeType(dateRange) {
+		if (dateRange != null) {
+			if (dateRange.type == 'today') {
+				return this.translate('今天');
+			} else if (dateRange.type == 'yesterday') {
+				return this.translate('昨天');
+			} else if (dateRange.type == 'thisweek') {
+				return this.translate('本周');
+			} else if (dateRange.type == 'thismonth') {
+				return this.translate('本月');
+			} else if (dateRange.type == 'last3day') {
+				return this.translate('最近3天');
+			} else if (dateRange.type == 'last7day') {
+				return this.translate('最近7天');
+			} else if (dateRange.type == 'lastweek') {
+				return this.translate('上周');
+			} else if (dateRange.type == 'lastmonth') {
+				return this.translate('上月');
+			} else if (dateRange.type == 'custom') {
+				return this.translate('自定义');
 			}
 		}
+		return '';
+	},
+	formatDateRangeDateTime(dateRange, format, split) {
+		if (dateRange != null) {
+			return `${moment(dateRange.begin).format(format)}${split}${moment(dateRange.end).format(format)}`;
+		}
+		return '';
 	},
 };

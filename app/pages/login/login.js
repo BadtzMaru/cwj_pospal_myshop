@@ -128,7 +128,7 @@ export default class login extends Component {
 		httpUtil
 			.post(config.API.API_SIGNIN, params, area)
 			.then(async (response) => {
-				console.log('then', response);
+				console.log('登陆:', response);
 				storageUtil.setSigninOptions(params);
 				storageUtil.setStoreInfo(response.result);
 				await this.getAnnouncementList();
@@ -145,18 +145,16 @@ export default class login extends Component {
 				);
 			})
 			.catch((error) => {
-				console.log('catch', error);
+				console.log('登陆err', error);
 			});
 	}
 	getAnnouncementList() {
 		return new Promise((resolve, reject) => {
 			storageUtil.getDateRangeAndUserIdsParam().then((params) => {
-				console.log('params:', params);
-				//  获取店铺数据
 				httpUtil
 					.post(config.API.API_LoadAnnouncements, params)
 					.then((res) => {
-						console.log('LoadAnnouncements获取的数据:', res);
+						console.log('公告信息:', res);
 						let list = res.result.announcements;
 						for (let i in list) {
 							list[i] = Object.assign({}, list[i], { show: true });
@@ -165,6 +163,7 @@ export default class login extends Component {
 						resolve(res);
 					})
 					.catch((error) => {
+						console.log('公告信息err:', error);
 						resolve(error);
 					});
 			});
