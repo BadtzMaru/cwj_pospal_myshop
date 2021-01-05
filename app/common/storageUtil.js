@@ -2,6 +2,7 @@ import moment from 'moment';
 import { AsyncStorage } from 'react-native';
 import { storageUtil } from './importUtil';
 import config from './config';
+import RCTDeviceEventEmitter from 'RCTDeviceEventEmitter';
 
 module.exports = {
 	async getUserToken() {
@@ -233,5 +234,20 @@ module.exports = {
 				return null;
 			}
 		}
+	},
+	// 保存时间范围
+	setDateRange(range) {
+		console.log(range);
+		this._dateRange = range;
+		this._lastChangeDateRangeTime = new Date();
+		this._lastChangeDateRangeAndStoreTime = new Date();
+		if (this._dateRange != null) {
+			if (this._dateRange.begin.diff(this._dateRange.end, 'days') == 0) {
+				this._dateRange.groupBy = 'hour';
+			} else {
+				this._dateRange.groupBy = 'day';
+			}
+		}
+		RCTDeviceEventEmitter.emit(config.NOTIFIES.DATERANGE_CHANGE, this._dateRange);
 	},
 };

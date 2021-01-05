@@ -33,10 +33,20 @@ const _api = {
 	API_LoadAnnouncements: 'myshopapi/Setting/LoadAnnouncements', //公告
 };
 
+const _notifies = {
+	CURRENTSTORE_CHANGE: 'storeChangeNotify',
+	DATERANGE_CHANGE: 'dateRangeChangeNotify',
+	THEME_CHANGE: 'THEME_CHANGE',
+	SALE_PAGE_CHANGE: 'SALE_PAGE_CHANGE',
+	MEMBER_PAGE_CHANGE: 'MEMBER_PAGE_CHANGE',
+	HOME_CHANGE: 'HOME_CHANGE',
+};
+
 module.exports = {
 	ENVIRONMENT: _environments[_environment],
 	API: _api,
 	VERSIONCODE: _versionCode,
 	VERSION: _version,
 	DEBUG: _environments[_environment].DEBUG,
+	NOTIFIES: _notifies,
 };

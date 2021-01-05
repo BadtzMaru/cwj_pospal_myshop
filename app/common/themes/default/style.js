@@ -4,6 +4,7 @@ import Toast from './styles/component/Toast';
 import main from './styles/pages/main/main';
 import Container from './styles/component/Container';
 import Header from './styles/component/Header';
+import DateRangeSelector from './styles/component/DateRangeSelector';
 
 export default {
 	component: {
@@ -11,6 +12,7 @@ export default {
 		Toast,
 		Container,
 		Header,
+		DateRangeSelector,
 	},
 	pages: {
 		login: {

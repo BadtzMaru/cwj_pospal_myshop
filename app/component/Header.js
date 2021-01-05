@@ -19,9 +19,7 @@ class Header extends Component {
 		storageUtil.getStoreInfo().then((store) => {
 			this.setState({ storeInfo: store });
 		});
-		storageUtil.getAnnouncements().then((data) => {
-			console.log(data);
-		});
+		storageUtil.getAnnouncements().then((data) => {});
 	}
 	static defaultProps = {
 		mode: 'simple',
@@ -63,7 +61,10 @@ class Header extends Component {
 		return (
 			<View style={[styles.row, { flex: 1 }, styles.rowPad]}>
 				{backable && <View style={styles.row} />}
-				<TouchableOpacity onPress={() => {}}>
+				<TouchableOpacity
+					onPress={() => {
+						this.refs.dateRangeSelector.open();
+					}}>
 					<View style={styles.simple_date_container}>
 						<Image style={styles.date_icon} source={image.menu_date_icon_max} />
 						<View style={styles.simple_date_text_container}>
