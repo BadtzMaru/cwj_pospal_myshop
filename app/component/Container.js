@@ -5,7 +5,12 @@ import Header from './Header';
 
 export default class Container extends Component {
 	static defaultProps = {
-		headerProps: {},
+		headerProps: {
+			mode: 'simple',
+			backable: false,
+			hideDate: false,
+			adType: null,
+		},
 		loadingProps: {},
 	};
 
@@ -15,7 +20,8 @@ export default class Container extends Component {
 		return (
 			<View style={styles.container}>
 				{Platform.OS === 'ios' && <View style={{ alignSelf: 'stretch', height: 20 }} />}
-				<Header />
+				<Header style={styles.header} {...this.props.headerProps} />
+				{this.props.children}
 			</View>
 		);
 	}

@@ -47,7 +47,28 @@ export default class DateRangeSelector extends Component {
 		this.dateRangeListener && this.dateRangeListener.remove();
 	}
 	changeTime = (dateTime) => {
-		this.setState({ dateTime });
+		this.setState({ dateTime }, function () {
+			let dateRange = Object.assign({}, this.state.dateRange);
+			const type = dateRange.type;
+			const dateHour = parseInt(dateTime.split(':')[0]);
+			const dateMinute = parseInt(dateTime.split(':')[1]);
+			if (dateRange.type != 'custom') {
+				this.changeDateType(type);
+			} else {
+				let begin = moment(dateRange.begin).hours(dateHour).minutes(dateMinute).seconds(0);
+				let end = moment(dateRange.end).hours(dateHour).minutes(dateMinute).seconds(0).subtract(1, 'seconds');
+				dateRange = Object.assign(
+					{},
+					{
+						begin,
+						end,
+						type,
+						dateTime,
+					}
+				);
+				this.setState({ dateRange });
+			}
+		});
 	};
 	showBeginDateTimePicker() {
 		let { dateRange, currentDateTime } = this.state;

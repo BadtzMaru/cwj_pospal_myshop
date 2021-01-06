@@ -250,4 +250,10 @@ module.exports = {
 		}
 		RCTDeviceEventEmitter.emit(config.NOTIFIES.DATERANGE_CHANGE, this._dateRange);
 	},
+	async setAppState(state) {
+		console.log(state);
+		this._currentAppState = state;
+		AsyncStorage.setItem('CURRENT_APPSTATE', JSON.stringify(state));
+		RCTDeviceEventEmitter.emit(config.NOTIFIES.HOME_CHANGE, state);
+	},
 };

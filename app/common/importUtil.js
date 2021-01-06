@@ -11,6 +11,7 @@ import storageUtil from './storageUtil';
 import AnalyticsUtil from '../component/umeng/AnalyticsUtil';
 import commonUtil from './commonUtil';
 import Container from '../component/Container';
+import PullRefreshScrollView from '../component/PullRefreshScrollView';
 
 export {
 	React,
@@ -31,4 +32,5 @@ export {
 	commonUtil,
 	Alert,
 	Container,
+	PullRefreshScrollView
 };

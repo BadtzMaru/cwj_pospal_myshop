@@ -5,6 +5,8 @@ import main from './styles/pages/main/main';
 import Container from './styles/component/Container';
 import Header from './styles/component/Header';
 import DateRangeSelector from './styles/component/DateRangeSelector';
+import PullRefreshScrollView from './styles/component/PullRefreshScrollView';
+import overview from './styles/pages/overview/main';
 
 export default {
 	component: {
@@ -13,6 +15,7 @@ export default {
 		Container,
 		Header,
 		DateRangeSelector,
+		PullRefreshScrollView,
 	},
 	pages: {
 		login: {
@@ -20,6 +23,9 @@ export default {
 		},
 		main: {
 			main,
+		},
+		overview: {
+			main: overview,
 		},
 	},
 };

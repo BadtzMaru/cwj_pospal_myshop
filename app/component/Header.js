@@ -3,6 +3,8 @@ import { View, Text, TouchableOpacity, Image } from 'react-native';
 import commonUtil from '../common/commonUtil';
 import storageUtil from '../common/storageUtil';
 import DateRangeSelector from './DateRangeSelector';
+import RCTDeviceEventEmitter from 'RCTDeviceEventEmitter';
+import config from '../common/config';
 
 const HeaderMode = ['full', 'simple', 'titleBack'];
 
@@ -26,36 +28,17 @@ class Header extends Component {
 		backable: false,
 		hideDate: false,
 	};
+	// 页面初始化
+	componentDidMount() {
+		this.dateRangeListener = RCTDeviceEventEmitter.addListener(config.NOTIFIES.DATERANGE_CHANGE, (value) => {
+			this.setState({ dateRange: value });
+		});
+	}
 	componentWillUnmount() {
 		this.setState = (state, callback) => {
 			return;
 		};
-	}
-	render() {
-		let theme = commonUtil.getTheme();
-		let styles = theme.style.component.Header;
-		let image = theme.image;
-		let mode = this.props.mode;
-		let backable = this.props.backable;
-		let hideDate = this.props.hideDate;
-
-		if (mode === 'titleBack') {
-		} else if (mode === 'full') {
-		} else {
-			if (backable) {
-			} else {
-				return (
-					<View style={styles.container}>
-						<View style={styles.row}>
-							{this.renderSimpleDate(styles, image, backable)}
-							{this.renderTitle(styles, image)}
-							<View style={[styles.row, { flex: 1, justifyContent: 'flex-end' }]}>{this.props.renderRightMenu && this.props.renderRightMenu()}</View>
-						</View>
-						<DateRangeSelector ref={'dateRangeSelector'} />
-					</View>
-				);
-			}
-		}
+		this.dateRangeListener && this.dateRangeListener.remove();
 	}
 	renderSimpleDate(styles, image, backable) {
 		return (
@@ -107,6 +90,69 @@ class Header extends Component {
 					<Text style={styles.title}>{title}</Text>
 				</View>
 			);
+		}
+	}
+	// mode === 'full' 的情况下渲染 首页时间样式
+	renderFullDate(styles, image) {
+		return (
+			<View style={[styles.row, styles.full_date_container]}>
+				<TouchableOpacity
+					onPress={() => {
+						this.refs.dateRangeSelector.open();
+					}}>
+					<View style={{ flexDirection: 'row', alignItems: 'center' }}>
+						<Image style={styles.date_icon} source={image.menu_date_icon_max} />
+						<Text style={styles.full_date_text_title}>{commonUtil.formatDateRangeType(this.state.dateRange)}</Text>
+					</View>
+				</TouchableOpacity>
+				<TouchableOpacity
+					onPress={() => {
+						this.refs.dateRangeSelector.open();
+					}}>
+					<Text style={styles.full_date_text_date}>{commonUtil.formatDateRangeDateTime(this.state.dateRange, commonUtil.translate('间隔日期格式'), ' - ')}</Text>
+				</TouchableOpacity>
+			</View>
+		);
+	}
+	render() {
+		let theme = commonUtil.getTheme();
+		let styles = theme.style.component.Header;
+		let image = theme.image;
+		let mode = this.props.mode;
+		let backable = this.props.backable;
+		let hideDate = this.props.hideDate;
+
+		if (mode === 'titleBack') {
+		}
+
+		if (mode === 'full') {
+			return (
+				<View style={styles.container}>
+					<View style={styles.row}>
+						<View style={styles.row} />
+						{this.renderTitle(styles, image)}
+						<View style={styles.row} />
+					</View>
+					{/* 预留广告 (未实现) */}
+					{this.renderFullDate(styles, image)}
+					<DateRangeSelector ref={'dateRangeSelector'} />
+				</View>
+			);
+		} else {
+			if (backable) {
+			} else {
+				return (
+					<View style={styles.container}>
+						<View style={styles.row}>
+							{this.renderSimpleDate(styles, image, backable)}
+							{this.renderTitle(styles, image)}
+							<View style={[styles.row, { flex: 1, justifyContent: 'flex-end' }]}>{this.props.renderRightMenu && this.props.renderRightMenu()}</View>
+						</View>
+						{/* 预留广告 (未实现) */}
+						<DateRangeSelector ref={'dateRangeSelector'} />
+					</View>
+				);
+			}
 		}
 	}
 }

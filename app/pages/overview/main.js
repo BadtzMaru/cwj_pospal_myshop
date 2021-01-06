@@ -1,4 +1,5 @@
-import { React, Component, View, Text, storageUtil, Container } from '../../common/importUtil';
+import { React, Component, View, Text, storageUtil, Container, PullRefreshScrollView } from '../../common/importUtil';
+import style from '../../common/themes/default/style';
 
 export default class Main extends Component {
 	constructor(props) {
@@ -25,6 +26,21 @@ export default class Main extends Component {
 	componentDidMount() {}
 
 	render() {
-		return <Container></Container>;
+		let theme = this.theme();
+		let styles = theme.style.pages.overview.main;
+		let image = theme.image;
+		let color = theme.color;
+		return (
+			<Container headerProps={{ mode: 'full', adType: 1 }}>
+				<PullRefreshScrollView
+					style={{ backgroundColor: color.bgLine }}
+					onRefresh={() => {
+						storageUtil.setAppState(true);
+					}}>
+					<View style={styles.spaceView} navigation={this.state.navigation} />
+					{!this.state.isSale && this.state.industry && this.state.industry != 108 && <Text>BusinessProfile</Text>}
+				</PullRefreshScrollView>
+			</Container>
+		);
 	}
 }
