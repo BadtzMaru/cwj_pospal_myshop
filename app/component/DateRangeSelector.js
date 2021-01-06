@@ -95,7 +95,6 @@ export default class DateRangeSelector extends Component {
 			end = end.subtract(1, 'day');
 		} else if (type == 'thisweek') {
 			begin = begin.startOf('week');
-			console.log(begin.format('YYYY-MM-DD HH:mm:ss'));
 		} else if (type == 'thismonth') {
 			begin = begin.startOf('month').hours(dateHour).minutes(dateMinute).seconds(0);
 		} else if (type == 'last3day') {
@@ -105,8 +104,6 @@ export default class DateRangeSelector extends Component {
 		} else if (type == 'lastweek') {
 			begin = begin.startOf('week').add(-1, 'weeks').hours(dateHour).minutes(dateMinute).seconds(0);
 			end = end.endOf('week').add(-1, 'weeks').add(1, 'days').hours(dateHour).minutes(dateMinute).seconds(0).subtract(1, 'seconds');
-			console.log(begin.format('YYYY-MM-DD HH:mm:ss'));
-			console.log(end.format('YYYY-MM-DD HH:mm:ss'));
 		} else if (type == 'lastmonth') {
 			begin = begin.startOf('month').add(-1, 'months').hours(dateHour).minutes(dateMinute).seconds(0);
 			end = end.add(-1, 'months').endOf('month').add(1, 'days').hours(dateHour).minutes(dateMinute).seconds(0).subtract(1, 'seconds');

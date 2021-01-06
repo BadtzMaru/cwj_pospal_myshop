@@ -85,8 +85,6 @@ export default {
 		height: 136,
 	},
 	bg: {
-		//width: '100%',
-		//height: '100%',
 		flexDirection: 'row',
 		flex: 1,
 		justifyContent: 'space-around',

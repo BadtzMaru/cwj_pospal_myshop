@@ -1,5 +1,6 @@
-import { React, Component, View, Text, storageUtil, Container, PullRefreshScrollView } from '../../common/importUtil';
+import { React, Component, View, Text, storageUtil, Container, PullRefreshScrollView, Toast } from '../../common/importUtil';
 import style from '../../common/themes/default/style';
+import BusinessProfile from './businessProfile';
 
 export default class Main extends Component {
 	constructor(props) {
@@ -22,8 +23,13 @@ export default class Main extends Component {
 			this.setState({ isMember: lock });
 		});
 	}
-
-	componentDidMount() {}
+	componentDidMount() {
+		super.componentDidMount();
+	}
+	// 消息弹窗
+	toast(message) {
+		this.refs.toast && this.refs.toast.show(message);
+	}
 
 	render() {
 		let theme = this.theme();
@@ -38,8 +44,11 @@ export default class Main extends Component {
 						storageUtil.setAppState(true);
 					}}>
 					<View style={styles.spaceView} navigation={this.state.navigation} />
-					{!this.state.isSale && this.state.industry && this.state.industry != 108 && <Text>BusinessProfile</Text>}
+					{!this.state.isSale && this.state.industry && this.state.industry != 108 && (
+						<BusinessProfile ref='BusinessProfile' navigation={this.state.navigation} toast={this.toast.bind(this)} />
+					)}
 				</PullRefreshScrollView>
+				<Toast ref='toast' />
 			</Container>
 		);
 	}

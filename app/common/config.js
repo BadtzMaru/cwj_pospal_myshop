@@ -29,8 +29,12 @@ const _environments = {
 };
 
 const _api = {
+	// 帐号
 	API_SIGNIN: '/myshopapi/Account/SignIn', // 登陆
 	API_LoadAnnouncements: 'myshopapi/Setting/LoadAnnouncements', //公告
+	// 总览
+	API_LoadSaleAnalysisList: '/myshopapi/Overview/LoadSaleAnalysisList', //销售图表
+	API_LoadSaleRanking: '/myshopapi/Overview/LoadSaleRanking', //营业概况排名 （用于连锁门店）
 };
 
 const _notifies = {

@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, TextInput, TouchableOpacity, Image, Alert } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, Image, Alert, ImageBackground, InteractionManager } from 'react-native';
 import Component from '../component/baseComponent';
 import LoadingView from '../component/LoadingView';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
@@ -12,6 +12,8 @@ import AnalyticsUtil from '../component/umeng/AnalyticsUtil';
 import commonUtil from './commonUtil';
 import Container from '../component/Container';
 import PullRefreshScrollView from '../component/PullRefreshScrollView';
+import ScrollableTabView from '../component/CustomScrollableTabView';
+import LineChart from '../component/LineChart';
 
 export {
 	React,
@@ -32,5 +34,9 @@ export {
 	commonUtil,
 	Alert,
 	Container,
-	PullRefreshScrollView
+	PullRefreshScrollView,
+	ImageBackground,
+	InteractionManager,
+	ScrollableTabView,
+	LineChart,
 };

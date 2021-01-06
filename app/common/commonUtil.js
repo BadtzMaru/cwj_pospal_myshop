@@ -68,4 +68,14 @@ module.exports = {
 		}
 		return '';
 	},
+	// 计算字体大小
+	formatTextSize(value, maxLength, oriSize) {
+		if (value && value.toString().length > maxLength) {
+			return oriSize - oriSize / 8;
+		}
+		return oriSize;
+	},
+	formatStringDate(strData, format) {
+		return moment(strData).format(format);
+	},
 };

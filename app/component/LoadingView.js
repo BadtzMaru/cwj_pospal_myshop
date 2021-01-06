@@ -113,9 +113,7 @@ export default class LoadingView extends React.Component {
 		let theme = commonUtil.getTheme();
 		let styles = theme.style.component.LoadingView;
 		return (
-			<View
-				//  {...this.props}
-				style={[styles.container, this.props.style && this.props.style]}>
+			<View style={[styles.container, this.props.style && this.props.style]}>
 				{this._renderContent(styles)}
 				{this._renderLoading(styles)}
 			</View>
