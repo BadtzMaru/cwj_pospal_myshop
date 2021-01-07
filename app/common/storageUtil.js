@@ -50,7 +50,7 @@ module.exports = {
 	setNavigation(navigation) {
 		this._navigation = navigation;
 	},
-	async getNavigation() {
+	getNavigation() {
 		return this._navigation;
 	},
 	async delStoreInfo() {
@@ -146,7 +146,7 @@ module.exports = {
 		if (this._currentStore) {
 			return this._currentStore;
 		} else {
-			let value = AsyncStorage.getItem('CURRENT_STORE');
+			let value = await AsyncStorage.getItem('CURRENT_STORE');
 			if (value) {
 				this._currentStore = JSON.parse(value);
 				return this._currentStore;
@@ -255,5 +255,43 @@ module.exports = {
 		this._currentAppState = state;
 		AsyncStorage.setItem('CURRENT_APPSTATE', JSON.stringify(state));
 		RCTDeviceEventEmitter.emit(config.NOTIFIES.HOME_CHANGE, state);
+	},
+	// 改变分店
+	setCurrentStore(store) {
+		this._currentStore = store;
+		this._lastChangeStoreTime = new Date();
+		this._lastChangeDateRangeAndStoreTime = new Date();
+		AsyncStorage.setItem('CURRENT_STORE', JSON.stringify(store));
+		RCTDeviceEventEmitter.emit(config.NOTIFIES.CURRENTSTORE_CHANGE, this._currentStore);
+	},
+	getFocusedBottomTab() {
+		return this._FocusedBottomTab || 'overview';
+	},
+	// 时间或者分店改变事件
+	getIfDateRangeTimeOrStoreChanged(lastLoadTime) {
+		if (this._lastChangeDateRangeAndStoreTime && lastLoadTime && lastLoadTime > this._lastChangeDateRangeAndStoreTime) {
+			return false;
+		}
+		return true;
+	},
+	// 获取登陆信息
+	async getSigninOptions() {
+		if (this._signinOptions) {
+			return this._signinOptions;
+		} else {
+			let signinOptions = await AsyncStorage.getItem('SIGNIN_OPTIONS');
+			if (signinOptions) {
+				this._signinOptions = JSON.parse(signinOptions);
+				return this._signinOptions;
+			} else {
+				return null;
+			}
+		}
+	},
+	//工号登录，修改cashierAuths和websiteMenus
+	async setAuthority(author) {
+		let storeInfo = await this.getStoreInfo();
+		storeInfo = Object.assign({}, storeInfo, author);
+		this.setStoreInfo(storeInfo);
 	},
 };

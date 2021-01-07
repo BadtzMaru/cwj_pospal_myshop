@@ -21,11 +21,66 @@ export default class login extends Component {
 		this.state = {
 			loading: false,
 			cashierLogin: false,
-			account: 'qq707380414',
-			password: 'cwj19961005',
+			account: 'xm8botzb',
+			password: '123456',
 			displayPassword: false,
 			cashierNumber: '',
 		};
+	}
+	componentDidMount() {
+		super.componentDidMount();
+		storageUtil.setNavigation(this.props.navigation);
+		// 获取登陆信息
+		storageUtil.getSigninOptions().then((params) => {
+			if (params && params.account) {
+				this.setState({ account: params.account });
+			}
+		});
+		// 验证token是否过期
+		storageUtil.getStoreInfo().then((store) => {
+			console.log(store);
+			this.setState({ loading: false });
+			if (store && store.userToken) {
+				this.setState({ loading: true });
+				httpUtil
+					.post(config.API.API_VerificationToken, {})
+					.then(async (response) => {
+						console.log('XHR_验证token是否过期:', response);
+						if (response && response.successed) {
+							await this.getAnnouncementList();
+							if (store.cashierId != null) {
+								// 工号登陆
+								this.getCashierAuths(store.userId, store.cashierId);
+							} else {
+								this.setState({ loading: false });
+								this.props.navigation.replace('main');
+							}
+						} else {
+							this.setState({ loading: false });
+						}
+					})
+					.catch(() => {
+						this.setState({ loading: false });
+					});
+			}
+		});
+	}
+	getCashierAuths(userId, cashierId) {
+		httpUtil
+			.post(config.API.API_LoadCashierAuths, {
+				userId,
+				cashierId,
+			})
+			.then(async (response) => {
+				this.setState({ loading: false });
+				if (response && response.successed) {
+					await storageUtil.setAuthority(response.result);
+					this.props.navigation.replace('main');
+				}
+			})
+			.catch(() => {
+				this.setState({ loading: false });
+			});
 	}
 	renderCashierLogin(styles, color, image) {
 		return (
@@ -151,6 +206,7 @@ export default class login extends Component {
 	getAnnouncementList() {
 		return new Promise((resolve, reject) => {
 			storageUtil.getDateRangeAndUserIdsParam().then((params) => {
+				console.log(params);
 				httpUtil
 					.post(config.API.API_LoadAnnouncements, params)
 					.then((res) => {
@@ -160,11 +216,11 @@ export default class login extends Component {
 							list[i] = Object.assign({}, list[i], { show: true });
 						}
 						storageUtil.setAnnouncements(list);
-						resolve(res);
+						resolve();
 					})
 					.catch((error) => {
 						console.log('公告信息err:', error);
-						resolve(error);
+						resolve();
 					});
 			});
 		});

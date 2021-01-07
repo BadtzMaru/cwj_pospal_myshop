@@ -5,6 +5,7 @@ import storageUtil from '../common/storageUtil';
 import DateRangeSelector from './DateRangeSelector';
 import RCTDeviceEventEmitter from 'RCTDeviceEventEmitter';
 import config from '../common/config';
+import CustomDropdown from './CustomDropdown';
 
 const HeaderMode = ['full', 'simple', 'titleBack'];
 
@@ -32,6 +33,9 @@ class Header extends Component {
 	componentDidMount() {
 		this.dateRangeListener = RCTDeviceEventEmitter.addListener(config.NOTIFIES.DATERANGE_CHANGE, (value) => {
 			this.setState({ dateRange: value });
+		});
+		this.storeListener = RCTDeviceEventEmitter.addListener(config.NOTIFIES.CURRENTSTORE_CHANGE, (value) => {
+			this.setState({ currentStore: value });
 		});
 	}
 	componentWillUnmount() {
@@ -84,12 +88,28 @@ class Header extends Component {
 			}
 		}
 		if (options.length > 0) {
+			return (
+				<CustomDropdown
+					defaultId={defaultId}
+					defaultValue={title}
+					options={options}
+					buttonTextStyle={styles.title}
+					buttonArrowStyle={styles.arrow_icon}
+					onSelect={this.onChangeStore.bind(this)}
+				/>
+			);
 		} else {
 			return (
 				<View style={styles.title_container}>
 					<Text style={styles.title}>{title}</Text>
 				</View>
 			);
+		}
+	}
+	// 改变分店
+	onChangeStore(idx, store) {
+		if (store && store.value) {
+			storageUtil.setCurrentStore(store.value);
 		}
 	}
 	// mode === 'full' 的情况下渲染 首页时间样式

@@ -2,11 +2,15 @@ import { createStackNavigator, createAppContainer } from 'react-navigation';
 
 import login from './app/pages/login/login';
 import main from './app/pages/main/main';
+import businessRanking from './app/pages/overview/more/businessRanking';
 
 const navigator = createStackNavigator(
 	{
 		login: { screen: login },
 		main: { screen: main },
+		businessRanking: {
+			screen: businessRanking,
+		},
 	},
 	{
 		initialRouteName: 'login', //初始界面

@@ -193,6 +193,7 @@ class Main extends Component {
 
 	render() {
 		const Tab = this.tabNavigator();
+		storageUtil.setNavigation(this.props.navigation)
 		return <Tab />;
 	}
 }

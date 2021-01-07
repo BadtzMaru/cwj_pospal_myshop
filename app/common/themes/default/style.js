@@ -9,6 +9,7 @@ import ScrollableTabView, { tpml1 } from './styles/component/CustomScrollableTab
 import PullRefreshScrollView from './styles/component/PullRefreshScrollView';
 import overview from './styles/pages/overview/main';
 import LineChart from './styles/component/LineChart';
+import Dropdown from './styles/component/Dropdown';
 
 export default {
 	component: {
@@ -21,6 +22,7 @@ export default {
 		ScrollableTabView,
 		ScrollableTabViewTpml1: tpml1,
 		LineChart,
+		Dropdown,
 	},
 	pages: {
 		login: {

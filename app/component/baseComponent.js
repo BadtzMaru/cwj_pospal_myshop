@@ -14,13 +14,19 @@ export default class baseComponent extends Component {
 		this.dateRangeListener = RCTDeviceEventEmitter.addListener(config.NOTIFIES.DATERANGE_CHANGE, (value) => {
 			this.onDateRangeChange();
 		});
+		this.storeListener = RCTDeviceEventEmitter.addListener(config.NOTIFIES.CURRENTSTORE_CHANGE, (value) => {
+			this.onStoreChange();
+		});
 	}
 	componentWillUnmount() {
 		this.setState = (status, callback) => {
 			return;
 		};
 		this.dateRangeListener && this.dateRangeListener.remove();
+		this.storeListener && this.storeListener.remove();
 	}
 	// 时间范围改变处理函数
 	onDateRangeChange() {}
+	// 当前分店改变事件
+	onStoreChange() {}
 }

@@ -1,3 +1,4 @@
+import { Dimensions } from 'react-native';
 import {
 	React,
 	Component,
@@ -14,27 +15,45 @@ import {
 	InteractionManager,
 	ScrollableTabView,
 	LineChart,
+	Image,
+	LinearGradient,
 } from '../../common/importUtil';
 
 class BusinessProfile extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
+			init: false,
 			loading: false,
 			totalPrice: '0.00', // 总销售额
 			totalOrderNum: 0, // 订单数
 			totalPriceDatas: [], // 总销售额 列表数据
 			totalOrderDatas: [], // 订单数 列表数据
+			lastLoadDataTime: null, // 最后修改时间
+			shopSaleList: [], // 分店销售排名
 		};
 	}
-
 	componentDidMount() {
 		super.componentDidMount();
 		InteractionManager.runAfterInteractions(() => {
 			this.loadData(true, 1);
 		});
 	}
-
+	// 分店改变事件
+	onStoreChange() {
+		this.onFocusChange(storageUtil.getFocusedBottomTab() == 'overview');
+	}
+	// 时间范围改变时间
+	onDateRangeChange() {
+		this.onFocusChange(storageUtil.getFocusedBottomTab() == 'overview');
+	}
+	onFocusChange(focused) {
+		if (this.state.init && focused) {
+			if (storageUtil.getIfDateRangeTimeOrStoreChanged(this.state.lastLoadDataTime)) {
+				this.loadData(true, 1);
+			}
+		}
+	}
 	// 加载门店营业数据
 	loadData(showLoading, pageIndex) {
 		storageUtil.getDateRangeAndUserIdsParam().then((params) => {
@@ -85,7 +104,7 @@ class BusinessProfile extends Component {
 							});
 						}
 						// 子分店存在的情况
-						if (values && values.length.length > 1) {
+						if (values && values.length > 1) {
 							var response1 = values[1];
 							if (response1.successed) {
 								if (response1.result && response1.result.totalAmountRanking) {
@@ -132,7 +151,37 @@ class BusinessProfile extends Component {
 				});
 		});
 	}
-
+	// 渲染分店销售排行数据
+	renderList(datas) {
+		if (datas && datas.length == 0) {
+			return null;
+		} else {
+			let theme = this.theme();
+			let styles = theme.style.pages.overview.main;
+			let { width } = Dimensions.get('window');
+			var topNumMax = datas[0].topNum;
+			var views = [];
+			datas.map((p, i) => {
+				var _width = (p.topNum / topNumMax) * (width - 36);
+				_width = _width > 0 ? _width : 0;
+				views.push(
+					<View key={i}>
+						<View style={[styles.across_item_up]}>
+							<Text style={[styles.across_item_hd]}>{p.name}</Text>
+							<Text style={[styles.across_item_bd]}>{commonUtil.formatDecimal(p.topNum, 2)}</Text>
+							<Text style={[styles.across_item_ft]}>{commonUtil.formatPercent(p.percentageNum)}</Text>
+						</View>
+						<View style={[styles.across_item_down]}>
+							<View style={[styles.across_item_bg]}>
+								<LinearGradient start={{ x: 1, y: 0 }} end={{ x: 0, y: 0 }} colors={['#55D0FF', '#00B3FF']} style={[styles.across_item_bgli, { width: _width }]} />
+							</View>
+						</View>
+					</View>
+				);
+			});
+			return views;
+		}
+	}
 	render() {
 		let theme = this.theme();
 		let styles = theme.style.pages.overview.main;
@@ -172,6 +221,33 @@ class BusinessProfile extends Component {
 							</ScrollableTabView>
 						</View>
 						{/* 销售总额|订单数 表格 -E */}
+
+						{/* 分店销售排名 -S */}
+						{this.state.shopSaleList && this.state.shopSaleList.length > 0 && (
+							<View style={[styles.across]}>
+								<View style={[styles.across_head, styles.flexRow]}>
+									<Text style={[styles.across_head_hd]}>{this.translate('排名')}</Text>
+									<TouchableOpacity
+										onPress={() => {
+											this.props.navigation.navigate('businessRanking');
+										}}>
+										<View
+											style={[
+												styles.across_ft,
+												styles.flexRow,
+												{
+													alignItems: 'center',
+												},
+											]}>
+											<Text style={[styles.across_head_text]}>{this.translate('更多')}</Text>
+											<Image source={image.title_more_main_arrow} />
+										</View>
+									</TouchableOpacity>
+								</View>
+								<View style={[styles.across_body]}>{this.renderList(this.state.shopSaleList)}</View>
+							</View>
+						)}
+						{/* 分店销售排名 -E */}
 					</LoadingView>
 				</View>
 			</View>

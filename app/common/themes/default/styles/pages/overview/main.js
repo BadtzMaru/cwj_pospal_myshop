@@ -188,7 +188,6 @@ export default {
 	across_body: {
 		marginTop: 20,
 	},
-	across_body_item: {},
 	across_item_up: {
 		flexDirection: 'row',
 		alignItems: 'center',

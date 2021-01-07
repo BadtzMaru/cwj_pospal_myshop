@@ -78,4 +78,23 @@ module.exports = {
 	formatStringDate(strData, format) {
 		return moment(strData).format(format);
 	},
+	// 格式化小数点位数,默认两位
+	formatDecimal(value, digits) {
+		if (digits == null) {
+			digits = 2;
+		}
+		if (!value) {
+			value = 0;
+		}
+		return value.toFixed(digits);
+	},
+	// 格式化百分比
+	formatPercent(value) {
+		if (value) {
+			value = value * 100;
+			return `${value.toFixed(2)}%`
+		} else {
+			return '0.00%'
+		}
+	}
 };

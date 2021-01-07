@@ -1,6 +1,6 @@
 import { Platform } from 'react-native';
 
-const _environment = 'development';
+const _environment = 'production';
 const _versionCode = '1.4.4';
 const _version = '1.4.4';
 
@@ -31,8 +31,9 @@ const _environments = {
 const _api = {
 	// 帐号
 	API_SIGNIN: '/myshopapi/Account/SignIn', // 登陆
-	API_LoadAnnouncements: 'myshopapi/Setting/LoadAnnouncements', //公告
+	API_VerificationToken: '/myshopapi/Account/VerificationToken', // 验证token是否过期
 	// 总览
+	API_LoadAnnouncements: 'myshopapi/Setting/LoadAnnouncements', //公告
 	API_LoadSaleAnalysisList: '/myshopapi/Overview/LoadSaleAnalysisList', //销售图表
 	API_LoadSaleRanking: '/myshopapi/Overview/LoadSaleRanking', //营业概况排名 （用于连锁门店）
 };
