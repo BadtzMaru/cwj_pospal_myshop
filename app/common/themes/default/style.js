@@ -10,8 +10,10 @@ import PullRefreshScrollView from './styles/component/PullRefreshScrollView';
 import overview from './styles/pages/overview/main';
 import LineChart from './styles/component/LineChart';
 import Dropdown from './styles/component/Dropdown';
+import common from './styles/common';
 
 export default {
+	common,
 	component: {
 		LoadingView,
 		Toast,

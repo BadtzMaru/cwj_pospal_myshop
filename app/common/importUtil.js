@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, TextInput, TouchableOpacity, Image, Alert, ImageBackground, InteractionManager } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, Image, Alert, ImageBackground, InteractionManager, ScrollView, Dimensions, Platform } from 'react-native';
 import Component from '../component/baseComponent';
 import LoadingView from '../component/LoadingView';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
@@ -14,6 +14,7 @@ import Container from '../component/Container';
 import PullRefreshScrollView from '../component/PullRefreshScrollView';
 import ScrollableTabView from '../component/CustomScrollableTabView';
 import LineChart from '../component/LineChart';
+import ToggleSwitch from './../component/ToggleSwitch';
 
 export {
 	React,
@@ -39,4 +40,8 @@ export {
 	InteractionManager,
 	ScrollableTabView,
 	LineChart,
+	ScrollView,
+	Dimensions,
+	Platform,
+	ToggleSwitch,
 };

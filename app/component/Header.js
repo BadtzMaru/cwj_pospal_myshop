@@ -143,6 +143,20 @@ class Header extends Component {
 		let hideDate = this.props.hideDate;
 
 		if (mode === 'titleBack') {
+			return (
+				<View style={styles.navigator_container}>
+					<TouchableOpacity
+						onPress={() => {
+							this.props.navigation.pop();
+						}}>
+						<View style={styles.back_wrap}>
+							<Image style={styles.back_arrow_icon} source={image.back_arrow_icon} />
+						</View>
+					</TouchableOpacity>
+					<Text style={styles.navigation_title}>{this.props.titleDisplayName}</Text>
+					<View style={styles.navigation_back_image_place} />
+				</View>
+			);
 		}
 
 		if (mode === 'full') {
