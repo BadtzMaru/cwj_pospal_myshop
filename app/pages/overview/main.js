@@ -1,6 +1,7 @@
 import { React, Component, View, Text, storageUtil, Container, PullRefreshScrollView, Toast } from '../../common/importUtil';
 import style from '../../common/themes/default/style';
 import BusinessProfile from './businessProfile';
+import Member from './member';
 
 export default class Main extends Component {
 	constructor(props) {
@@ -43,10 +44,19 @@ export default class Main extends Component {
 					onRefresh={() => {
 						storageUtil.setAppState(true);
 					}}>
-					<View style={styles.spaceView} navigation={this.state.navigation} />
+					<View style={styles.spaceView} />
+					{/* 营业概况 -S */}
 					{!this.state.isSale && this.state.industry && this.state.industry != 108 && (
 						<BusinessProfile ref='BusinessProfile' navigation={this.state.navigation} toast={this.toast.bind(this)} />
 					)}
+					{/* 营业概况 -E */}
+
+					{/* 美妆概况 -S 未实现 */}
+					{/* 美妆概况 -E 未实现 */}
+
+					{/* 门店会员 -S */}
+					{!this.state.isMember && <Member ref='Menber' navigation={this.state.navigation} toast={this.toast.bind(this)} />}
+					{/* 门店会员 -E */}
 				</PullRefreshScrollView>
 				<Toast ref='toast' />
 			</Container>

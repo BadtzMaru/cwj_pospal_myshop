@@ -36,6 +36,8 @@ const _api = {
 	API_LoadAnnouncements: 'myshopapi/Setting/LoadAnnouncements', //公告
 	API_LoadSaleAnalysisList: '/myshopapi/Overview/LoadSaleAnalysisList', //销售图表
 	API_LoadSaleRanking: '/myshopapi/Overview/LoadSaleRanking', //营业概况排名 （用于连锁门店）
+	API_LoadCustomerConsumptionData: '/myshopapi/Overview/LoadCustomerConsumptionData', //会员统计
+	API_LoadCustomerRanking: '/myshopapi/Overview/LoadCustomerRanking',
 };
 
 const _notifies = {

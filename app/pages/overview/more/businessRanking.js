@@ -121,7 +121,7 @@ export default class businessRanking extends Component {
 							{/* 门店销售排名列表 -E */}
 
 							{/* IOS 底部横线遮挡 -S */}
-							<View style={Platform.OS == 'ios' ? { height: 30 } : {}} />
+							<View style={{ height: 30 }} />
 							{/* IOS 底部横线遮挡 -E */}
 
 							{/* 暂无数据 -S */}

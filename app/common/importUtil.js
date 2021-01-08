@@ -15,6 +15,7 @@ import PullRefreshScrollView from '../component/PullRefreshScrollView';
 import ScrollableTabView from '../component/CustomScrollableTabView';
 import LineChart from '../component/LineChart';
 import ToggleSwitch from './../component/ToggleSwitch';
+import RCTDeviceEventEmitter from 'RCTDeviceEventEmitter';
 
 export {
 	React,
@@ -44,4 +45,5 @@ export {
 	Dimensions,
 	Platform,
 	ToggleSwitch,
+	RCTDeviceEventEmitter,
 };
